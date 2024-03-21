@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h3>Chama Rounds</h3>
+    </div>
+    <div class="col">
+      <form method="POST">
+        {% csrf_token %}
+        
+          <div class="row">
+            <div class="col-8">
+              <input type="text" class="form-control" name="search_text" id="search_text" placeholder="Name/ID No. ...">
+            </div>
+            <div class="col-4">
+              <button class="btn btn-info">Search</button>
+            </div>
+          </div>
+      </form>
+    </div>
+    <div class="col">
+        <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newChamaRoundModal">Add Chama Round</a>
+
+    </div>
+</div>
+<hr/>
+      <div class="table-responsive small">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Member</th>
+              <th scope="col">Round Date</th>
+              <th scope="col">Amount Expected</th>
+              <th scope="col">Amount Raised</th>
+              <th scope="col" colspan="2"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for chama_round in page_obj %}
+            <tr>
+              <td>{{chama_round.id}}</td>
+              <td>{{chama_round.member}}</td>
+              <td>{{chama_round.round_date}}</td>
+              <td>{{chama_round.amount_expected}}</td>
+              <td>{{chama_round.amount_raised}}</td>
+              <td>
+                <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteChamaRoundModal{{ chama_round.id }}"><i class="bi bi-trash"></i></a>
+              </td>
+              
+              <td>
+                {% if chama_round.done %}
+              <span class="badge text-bg-success">Done!</span>
+              {% else %}
+                <a href="{% url 'end-chama-round' chama_round.id %}" class="btn btn-info btn-sm">Done</a>
+                {% endif %}
+              </td>
+              
+              {% include "chama_rounds/delete_chama_round.html" %}
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+        <div>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+              {% if page_obj.has_previous %}   
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+              {% endif %}
+              <a class="page-link" href="#">{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a>
+              {% if page_obj.has_next %}    
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+              {% endif %}   
+            </ul>
+          </nav>
+        </div>
+      </div>
+{% endblock content %}

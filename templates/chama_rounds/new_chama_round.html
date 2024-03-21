@@ -1,0 +1,47 @@
+<div class="modal fade" id="newChamaRoundModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-center">Add New Chama Round</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+            <form action="{% url 'new-chama-round' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+              
+                  <div class="mb-3">
+                    <select class="form-select" name="member" id="member">
+                        {% for member in members %}
+                        <option value="{{member.id}}">{{member.first_name}} {{member.last_name}}</option>
+                        {% endfor %}
+                    </select>
+                    
+                  </div>
+                  
+                  <div class="mb-3">
+                      <label for="exampleInputPassword1" class="form-label">Round Date</label>
+                      <input
+                        type="date"
+                        class="form-control"
+                        id="round_date"
+                        name="round_date"
+                        required
+                      /> 
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Chama Round</label>
+                    <select id="chama_round" class="form-select" name="chama_round" required>
+                      <option value="5th">Round ya 5th</option>
+                      <option value="17th">Round ya 17th</option>
+                    </select>
+                  </div>
+                  
+                <div class="text-center mt-2">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+              </div>
+              </form>
+      </div>
+    </div>
+  </div>

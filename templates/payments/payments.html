@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h3>Payments</h3>
+    </div>
+</div>
+<hr/>
+      <div class="table-responsive small">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Member</th>
+              <th scope="col">Chama Amount</th>
+              <th scope="col">Savings Amount</th>
+              <th scope="col">Total</th>
+              <th scope="col">Date Paid</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for payment in page_obj %}
+            <tr>
+              <td>{{payment.id}}</td>
+              <td>{{payment.member}}</td>
+              <td>{{payment.meri_go_round_amount}}</td>
+              <td>{{payment.savings_amount}}</td>
+              <td>{{payment.total_amount}}</td>
+              <td>{{payment.created}}</td>
+              <td><a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#">
+                <i class="bi bi-pencil-square"></i>
+              </a></td>
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+        <div>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+              {% if page_obj.has_previous %}   
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+              {% endif %}
+              <a class="page-link" href="#">{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a>
+              {% if page_obj.has_next %}    
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+              {% endif %}   
+            </ul>
+          </nav>
+        </div>
+      </div>
+{% endblock content %}
