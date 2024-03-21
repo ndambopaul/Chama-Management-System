@@ -78,22 +78,6 @@ def new_chama_round(request):
             chama_payments_list = []
             members = User.objects.filter(role="Member")
 
-            payments_list = []
-
-            for member in members:
-                payments_list.append(Payment(
-                    member=member,
-                    merigoround=chama_round,
-                    chama_amount=1500,
-                    savings_amount=0,
-                    amount_fined=0,
-                    total_amount=1500,
-                    closed=False
-                ))
-            
-            Payment.objects.bulk_create(payments_list)
-
-            """
 
             for member in members:
                 chama_payments_list.append(
@@ -121,7 +105,7 @@ def new_chama_round(request):
                     )
                 )
             MemberSaving.objects.bulk_create(members_savings_list)
-            """
+            
 
             # Create Member Savings Records
             print(f"Member: {member}, Round Date: {round_date}")

@@ -7,7 +7,7 @@
       <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="#">
+            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="{% url 'home' %}">
               <svg class="bi"><use xlink:href="#house-fill"/></svg>
               Dashboard
             </a>
@@ -28,6 +28,7 @@
             </a>
           </li>
           <hr>
+          <!--
           <li class="nav-item">
             <a class="nav-link d-flex align-items-center gap-2" href="{% url 'payments' %}">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-currency-dollar" viewBox="0 0 16 16">
@@ -37,6 +38,7 @@
             </a>
           </li>
           <hr>
+          -->
           <li class="nav-item">
             <a class="nav-link d-flex align-items-center gap-2" href="{% url 'members-savings' %}">
               <i class="bi bi-cash-coin"></i>
@@ -65,6 +67,19 @@
             </a>
           </li>
          
+          <hr>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center gap-2" href="#">
+              <i class="bi bi-currency-exchange"></i>
+              Member Loans
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center gap-2" href="#">
+              <i class="bi bi-cash-stack"></i>
+              Loan Payments
+            </a>
+          </li>
         </ul>
         <hr class="my-3">
 
