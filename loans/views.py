@@ -43,7 +43,20 @@ def new_loan(request):
 
 def edit_loan(request):
     if request.method == 'POST':
-        pass
+        loan_id = request.POST.get('loan_id')
+        amount_awarded = request.POST.get('amount_awarded')
+        amount_applied = request.POST.get('amount_applied')
+
+        awarded_amount = Decimal(amount_awarded) 
+        applied_amount = Decimal(amount_applied)
+
+
+        loan = Loan.objects.get(id=loan_id)
+        loan.amount_awarded = awarded_amount
+        loan.amount_applied = applied_amount
+        loan.save()
+
+        return redirect("loans")    
 
     return render(request, "loans/edit_loan.html")
 

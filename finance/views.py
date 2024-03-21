@@ -73,11 +73,9 @@ def new_chama_round(request):
                 amount_expected=members_count * 1500,
                 amount_raised=0,
             )
-
             # Create Chama Payment Records
             chama_payments_list = []
             members = User.objects.filter(role="Member")
-
 
             for member in members:
                 chama_payments_list.append(
@@ -106,7 +104,6 @@ def new_chama_round(request):
                 )
             MemberSaving.objects.bulk_create(members_savings_list)
             
-
             # Create Member Savings Records
             print(f"Member: {member}, Round Date: {round_date}")
             return redirect("chama-rounds")
