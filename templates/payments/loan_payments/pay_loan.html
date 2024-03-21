@@ -1,0 +1,61 @@
+<div class="modal fade" id="payLoanModal{{loan.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-center">Pay Loan</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+            <form action="{% url 'pay-loan' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <p>Member: {{loan.member.first_name}} {{loan.member.last_name}}</p>
+                        <p>Amount Awarded: {{loan.amount_awarded}}</p>
+                        <p>Amount Repaid: {{loan.amount_repaid}}</p>
+                        <p>Loan Balance: {{loan.loan_balance}}</p>
+                    </div>
+                     
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="member_id"
+                        name="member_id"
+                        value="{{loan.member.id}}"
+                        readonly
+                        hidden
+                        required
+                    />
+        
+    
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="loan_id"
+                        name="loan_id"
+                        value="{{loan.id}}"
+                        readonly
+                        hidden
+                        required
+                      />
+
+                      <div class="mb-3">
+                        <label class="form-label">Amount Paying</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="amount_paid"
+                            name="amount_paid"
+                        
+                            required
+                          />
+                    </div>
+               
+                      
+                <div class="text-center mt-2">
+                  <button type="submit" class="btn btn-primary">Submit Payment!</button>
+                </div>
+              </div>
+              </form>
+      </div>
+    </div>
+  </div>

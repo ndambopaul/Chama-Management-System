@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h3>Member Loans</h3>
+    </div>
+    <div class="col">
+        <form method="POST">
+          {% csrf_token %}
+            <div class="row">
+              <div class="col-8">
+                <input type="text" class="form-control" name="search_text" id="search_text" placeholder="Name/ID No. ...">
+              </div>
+              <div class="col-4">
+                <button class="btn btn-info">Search</button>
+              </div>
+            </div>
+        </form>
+      </div>
+      <div class="col">
+          <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newLoanModal">New Loan</a>
+  
+      </div>
+</div>
+<hr/>
+      <div class="table-responsive small">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Member</th>
+              <th scope="col">Amount Applied</th>
+              <th scope="col">Amount Awarded</th>
+              <th scope="col">Repay Amount</th>
+              <th scope="col">Amount Repaid</th>
+              <th scope="col">Due Date</th>
+              <th scope="col">Status</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for loan in page_obj %}
+            <tr>
+              <td>{{loan.id}}</td>
+              <td>{{loan.member}}</td>
+              <td>{{loan.amount_applied}}</td>
+              <td>{{loan.amount_awarded}}</td>
+              <td>{{loan.amount_to_repay}}</td>
+              <td>{{loan.amount_repaid}}</td>
+              <td>{{loan.date_due}}</td>
+              <td>{{loan.status}}</td>
+              {% if loan.status == 'Review' %}
+              <td>
+                <a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#approveLoanModal{{loan.id}}">
+                Approve
+              </a>
+              </td>
+              <td><a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#declineLoanModal{{loan.id}}">
+                Decline
+              </a></td>
+              {% elif loan.status == "Approved" %}
+              <td><a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#payLoanModal{{loan.id}}">
+                Pay
+              </a></td>
+              {% elif loan.status == "Declined" %}
+              <td><a class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#resetLoanModal{{loan.id}}">
+                Reset
+              </a></td>
+              {% endif %}
+
+              {% include "loans/approve_loan.html" %}
+              {% include "loans/decline_loan.html" %}
+              {% include "payments/loan_payments/pay_loan.html" %}
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+        <div>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+              {% if page_obj.has_previous %}   
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+              {% endif %}
+              <a class="page-link" href="#">{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a>
+              {% if page_obj.has_next %}    
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+              {% endif %}   
+            </ul>
+          </nav>
+        </div>
+      </div>
+{% endblock content %}
