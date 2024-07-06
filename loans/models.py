@@ -9,7 +9,7 @@ LOAN_STATUS_CHOICES = (
 )
 
 class Loan(AbstractBaseModel):
-    member = models.ForeignKey("users.User", on_delete=models.SET_NULL, null=True)
+    member = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="memberloans")
     amount_applied = models.DecimalField(max_digits=100, decimal_places=2)
     amount_awarded = models.DecimalField(max_digits=100, decimal_places=2, default=0)
     status = models.CharField(max_length=255, choices=LOAN_STATUS_CHOICES, default="Review")

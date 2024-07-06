@@ -5,7 +5,8 @@ from django.db.models import Q
 from django.shortcuts import redirect, render
 
 from users.models import User
-
+from finance.models import MemberSaving, MeriGoRoundPayment, ChamaFine
+from loans.models import Loan, LoanPayment
 
 # Create your views here.
 # Create your views here.
@@ -52,13 +53,8 @@ def members(request):
 def member_details(request, member_id=None):
     member = User.objects.get(id=member_id)
 
-    # books_issued = member.memberissuedbooks.all()
-    # paginator = Paginator(books_issued, 5)
-    # page_number = request.GET.get("page")
-    # page_obj = paginator.get_page(page_number)
-
     context = {
-        "member": member,
+        "member": member
         # "page_obj": page_obj
     }
 

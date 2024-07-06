@@ -3,12 +3,19 @@ from decimal import Decimal
 from django.core.paginator import Paginator
 from users.models import User
 from loans.models import Loan, LoanPayment
+from django.db.models import Q
 # Create your views here.
 def loans(request):
     loans = Loan.objects.all()
 
+    if request.method == "POST":
+        search_text = request.POST.get("search_text")
+        print(f"Search Text: {search_text}")
+        loans = Loan.objects.filter(Q(member__first_name__icontains=search_text) | Q(member__last_name__icontains=search_text))
+
+
     members = User.objects.filter(role="Member")
-    paginator = Paginator(loans, 14)
+    paginator = Paginator(loans, 8)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -91,7 +98,13 @@ def decline_loan(request):
 def loan_payments(request):
     loan_payments = LoanPayment.objects.all()
 
-    paginator = Paginator(loan_payments, 14)
+    if request.method == "POST":
+        search_text = request.POST.get("search_text")
+        print(f"Search Text: {search_text}")
+        loan_payments = LoanPayment.objects.filter(Q(member__first_name__icontains=search_text) | Q(member__last_name__icontains=search_text))
+
+
+    paginator = Paginator(loan_payments, 8)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 

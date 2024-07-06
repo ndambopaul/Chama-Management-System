@@ -1,6 +1,8 @@
 from django.db import models
 from core.models import AbstractBaseModel
 from django.contrib.auth.models import AbstractUser
+from finance.models import MemberSaving, MeriGoRoundPayment, ChamaFine
+from loans.models import Loan, LoanPayment
 
 # Create your models here.
 USER_ROLES = (
@@ -23,3 +25,15 @@ class User(AbstractUser, AbstractBaseModel):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+    
+    @property
+    def total_savings(self):
+        return sum(self.membersavings.all().values_list("amount_saved", flat=True))
+    
+    @property
+    def total_fines(self):
+        return sum(self.memberfines.all().values_list("amount_fined", flat=True))
+    
+    @property
+    def total_loans(self):
+        return sum(self.memberloans.all().values_list("amount_awarded", flat=True))

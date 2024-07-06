@@ -1,0 +1,32 @@
+<div class="modal fade" id="memberDetailsModal{{member.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-center">Member Details</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col">
+                    <p><b>Name:</b> {{member.first_name}} {{member.last_name}}</p>
+                    <p><b>Email:</b> {{member.email}}</p>
+                    <p><b>Phone:</b> {{member.phone_number}}</p>
+                    <p><b>ID. No:</b> {{member.id_number}}</p>
+                    <p><b>Gender:</b> {{member.gender}}</p>
+                    <p><b>Date Joined:</b> {{member.date_joined}}</p>
+                </div>
+                <div class="col">
+                    <p><b>Total Savings:</b> {{member.total_savings}}</p>
+                    <hr>
+                    <p><b>Total Fines:</b> {{member.total_fines}}</p>
+                    <p><b>Fines Paid:</b> 0</p>
+                    <hr>
+                    <p><b>Total Loans:</b> {{member.total_loans}}</p>
+                    <p><b>Loans Paid:</b> 0</p>
+                    <p><b>Loan Balance:</b> 0</p>
+                </div>
+              </div>
+            </div>
+      </div>
+    </div>
+  </div>

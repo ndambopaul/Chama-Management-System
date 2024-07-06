@@ -1,9 +1,21 @@
 {% extends "base.html" %}
-
 {% block content %}
-<div class="row">
+<div class="row mt-2">
     <div class="col">
         <h3>Member Savings</h3>
+    </div>
+    <div class="col">
+      <form method="POST">
+        {% csrf_token %}
+          <div class="row">
+            <div class="col-8">
+              <input type="text" class="form-control" name="search_text" id="search_text" placeholder="First Name...">
+            </div>
+            <div class="col-4">
+              <button class="btn btn-info">Search</button>
+            </div>
+          </div>
+      </form>
     </div>
 </div>
 <hr/>
@@ -31,12 +43,12 @@
               <td><b>{{saving.payment_status}}</b></td>
               <td>
                 {% if saving.payment_status == "Paid" %}
-                <a href="{% url 'member-savings-as-cancelled' saving.id %}" class="btn btn-danger btn-sm">Cancel saving</a>
+                <a href="{% url 'member-savings-as-cancelled' saving.id %}" class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i></a>
                 {% elif saving.payment_status == "Pending" %}
-                <a data-bs-toggle="modal" data-bs-target="#newSavingsRecordModal{{ saving.id }}" class="btn btn-success btn-sm">Paid</a>
-                <a href="{% url 'member-savings-as-defaulted' saving.id %}" class="btn btn-warning btn-sm">Default</a>
+                <a data-bs-toggle="modal" data-bs-target="#newSavingsRecordModal{{ saving.id }}" class="btn btn-success btn-sm"><i class="bi bi-check-circle"></i></a>
+                <a href="{% url 'member-savings-as-defaulted' saving.id %}" class="btn btn-warning btn-sm"><i class="bi bi-x"></i></a>
                 {% elif saving.payment_status == "Defaulted" or saving.payment_status == "Cancelled" %}
-                <a href="{% url 'member-savings-as-reset' saving.id %}" class="btn btn-info btn-sm">Reset saving</a>
+                <a href="{% url 'member-savings-as-reset' saving.id %}" class="btn btn-info btn-sm"><i class="bi bi-arrow-clockwise"></i></a>
                 {% endif %}
               </td>
               {% include "payments/savings/record_savings.html" %}

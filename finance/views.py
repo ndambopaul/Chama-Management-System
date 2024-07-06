@@ -3,12 +3,18 @@ from django.core.paginator import Paginator
 from finance.models import Payment, MemberSaving, MeriGoRound, MeriGoRoundPayment, ChamaFine
 from users.models import User
 from django.db import transaction
+from django.db.models import Q
 
 from decimal import Decimal
 # Create your views here.
 ## PAYMENTS COLLECTIONS
 def payments(request):
-    payments = Payment.objects.all()
+    payments = Payment.objects.all().order_by("-created")
+
+    if request.method == "POST":
+        search_text = request.POST.get("search_text")
+        print(f"Search Text: {search_text}")
+        payments = Payment.objects.filter(Q(member__first_name__icontains=search_text) | Q(member__last_name__icontains=search_text))
 
     paginator = Paginator(payments, 10)
     page_number = request.GET.get("page")
@@ -27,9 +33,15 @@ def new_payment(request):
 
 ## MERI GO ROUNDS
 def chama_rounds(request):
-    chama_rounds = MeriGoRound.objects.all()
+    chama_rounds = MeriGoRound.objects.all().order_by("-created")
 
     members = User.objects.filter(role="Member")
+
+    if request.method == "POST":
+        search_text = request.POST.get("search_text")
+        print(f"Search Text: {search_text}")
+        chama_rounds = MeriGoRound.objects.filter(Q(member__first_name__icontains=search_text) | Q(member__last_name__icontains=search_text))
+
 
     paginator = Paginator(chama_rounds, 10)
     page_number = request.GET.get("page")
@@ -114,13 +126,20 @@ def new_chama_round(request):
 
 ## MEMBER SAVINGS
 def members_savings(request):
-    savings = MemberSaving.objects.all()
-    paginator = Paginator(savings, 13)
+    savings = MemberSaving.objects.all().order_by("-created")
+    members = User.objects.filter(role="Member")
+    if request.method == "POST":
+        search_text = request.POST.get("search_text")
+        print(f"Search Text: {search_text}")
+        savings = MemberSaving.objects.filter(Q(member__first_name__icontains=search_text) | Q(member__last_name__icontains=search_text))
+
+    paginator = Paginator(savings, 8)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
     context = {
         "page_obj": page_obj,
+        "members": members
     }
     return render(request, "payments/savings/savings.html", context)
 
@@ -185,8 +204,15 @@ def mark_member_savings_as_cancelled(request, savings_id):
 
 # MERI GO ROUND PAYMENTS
 def chama_round_payments(request):
-    chama_round_payments = MeriGoRoundPayment.objects.all()
-    paginator = Paginator(chama_round_payments, 13)
+    chama_round_payments = MeriGoRoundPayment.objects.all().order_by("-created")
+
+    if request.method == "POST":
+        search_text = request.POST.get("search_text")
+        print(f"Search Text: {search_text}")
+        chama_round_payments = MeriGoRoundPayment.objects.filter(Q(member__first_name__icontains=search_text) | Q(member__last_name__icontains=search_text))
+
+
+    paginator = Paginator(chama_round_payments, 8)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
@@ -201,6 +227,11 @@ def mark_chama_payments_as_paid(request, payment_id):
     payment.payment_status = "Paid"
     payment.amount_paid = 1500
     payment.save()
+    payment.merigoround.amount_raised += 1500
+    payment.merigoround.save()
+
+    print(payment.merigoround.amount_raised)
+    
 
     return redirect("chama-payments")
 
@@ -217,6 +248,9 @@ def mark_chama_payments_as_defaulted(request, payment_id):
 
 def mark_chama_payments_as_reset(request, payment_id):
     payment = MeriGoRoundPayment.objects.get(id=payment_id)
+    if payment.payment_status == "Paid":
+        payment.merigoround.amount_raised -= payment.amount_paid
+        payment.merigoround.save()
     payment.paid = False
     payment.payment_status = "Pending"
     payment.amount_paid = 0
@@ -227,6 +261,9 @@ def mark_chama_payments_as_reset(request, payment_id):
 
 def mark_chama_payments_as_cancelled(request, payment_id):
     payment = MeriGoRoundPayment.objects.get(id=payment_id)
+    if payment.payment_status == "Paid":
+        payment.merigoround.amount_raised -= payment.amount_paid
+        payment.merigoround.save()
     payment.paid = False
     payment.payment_status = "Cancelled"
     payment.amount_paid = 0
@@ -238,6 +275,12 @@ def mark_chama_payments_as_cancelled(request, payment_id):
 ## FINES
 def chama_fines(request):
     chama_fines = ChamaFine.objects.all().order_by("-created")
+
+    if request.method == "POST":
+        search_text = request.POST.get("search_text")
+        print(f"Search Text: {search_text}")
+        chama_fines = ChamaFine.objects.filter(Q(member__first_name__icontains=search_text) | Q(member__last_name__icontains=search_text))
+
 
     paginator = Paginator(chama_fines, 13)
     page_number = request.GET.get("page")
