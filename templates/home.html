@@ -7,23 +7,31 @@
           <h5 class="card-title">Members</h5>
           <hr/>
           <p class="card-text">Count: {{members_count}}</p>
-          <a href="#" class="btn btn-info btn-sm">See List</a>
+          <a href="{% url 'members' %}" class="btn btn-info btn-sm">See List</a>
         </div>
       </div>
       <div class="card m-2" style="width: 16rem;">
         <div class="card-body">
           <h5 class="card-title">Loans</h5>
           <hr/>
-          <p class="card-text">Total: {{loans_total}}</p>
-          <a href="#" class="btn btn-info btn-sm">See List</a>
+          <p class="card-text">Total: {{loans_amount}}</p>
+          <a href="{% url 'loans' %}" class="btn btn-info btn-sm">See List</a>
         </div>
       </div>
       <div class="card m-2" style="width: 16rem;">
         <div class="card-body">
           <h5 class="card-title">Savings</h5>
           <hr/>
-          <p class="card-text">Total: {{savings_total}}</p>
-          <a href="#" class="btn btn-info btn-sm">See List</a>
+          <p class="card-text">Total: {{savings_amount}}</p>
+          <a href="{% url 'total-savings' %}" class="btn btn-info btn-sm">See List</a>
+        </div>
+      </div>
+      <div class="card m-2" style="width: 16rem;">
+        <div class="card-body">
+          <h5 class="card-title">Fines</h5>
+          <hr/>
+          <p class="card-text">Total: {{fines_amount}}</p>
+          <a href="{% url 'chama-fines' %}" class="btn btn-info btn-sm">See List</a>
         </div>
       </div>
   </div>
