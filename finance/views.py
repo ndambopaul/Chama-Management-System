@@ -125,6 +125,23 @@ def new_chama_round(request):
 
 
 ## MEMBER SAVINGS
+def total_savings(request):
+    members = User.objects.filter(role="Member").order_by("-id")
+    if request.method == "POST":
+        search_text = request.POST.get("search_text")
+        print(f"Search Text: {search_text}")
+        members = User.objects.filter(Q(first_name__icontains=search_text) | Q(last_name__icontains=search_text))
+
+    paginator = Paginator(members, 8)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "page_obj": page_obj,
+        "members": members
+    }
+    return render(request, "payments/savings/member_savings.html", context)
+
 def members_savings(request):
     savings = MemberSaving.objects.all().order_by("-created")
     members = User.objects.filter(role="Member")
@@ -167,7 +184,6 @@ def mark_member_savings_as_paid(request):
                 merigoround=payment.merigoround,
                 amount_fined=Decimal(fine)
             )
-
 
     return redirect("members-savings")
 

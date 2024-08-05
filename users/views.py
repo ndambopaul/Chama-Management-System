@@ -41,7 +41,7 @@ def members(request):
             | Q(phone_number__icontains=search_text)
         ).order_by("-created")
 
-    paginator = Paginator(members, 10)
+    paginator = Paginator(members, 8)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
