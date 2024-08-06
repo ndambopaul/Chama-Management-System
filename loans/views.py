@@ -4,7 +4,9 @@ from django.core.paginator import Paginator
 from users.models import User
 from loans.models import Loan, LoanPayment
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 # Create your views here.
+@login_required(login_url="/users/login/")
 def loans(request):
     loans = Loan.objects.all()
 
@@ -26,6 +28,7 @@ def loans(request):
 
     return render(request, "loans/loans.html", context)
 
+@login_required(login_url="/users/login/")
 def new_loan(request):
     if request.method == 'POST':
         member_id = request.POST.get('member_id')
@@ -47,7 +50,7 @@ def new_loan(request):
 
     return render(request, "loans/new_loan.html")
 
-
+@login_required(login_url="/users/login/")
 def edit_loan(request):
     if request.method == 'POST':
         loan_id = request.POST.get('loan_id')
@@ -67,7 +70,7 @@ def edit_loan(request):
 
     return render(request, "loans/edit_loan.html")
 
-
+@login_required(login_url="/users/login/")
 def approve_loan(request):
     if request.method == 'POST':
         loan_id = request.POST.get('loan_id')
@@ -80,7 +83,7 @@ def approve_loan(request):
     
     return render(request, "loans/approve_loan.html")
 
-
+@login_required(login_url="/users/login/")
 def decline_loan(request):
     if request.method == "POST":
         loan_id = request.POST.get("loan_id")
@@ -94,7 +97,7 @@ def decline_loan(request):
     return render(request, "loans/decline_loan.html")
 
 #### LOANS PAYMENTS
-
+@login_required(login_url="/users/login/")
 def loan_payments(request):
     loan_payments = LoanPayment.objects.all()
 
@@ -114,7 +117,7 @@ def loan_payments(request):
 
     return render(request, "payments/loan_payments/loan_payments.html", context)
 
-
+@login_required(login_url="/users/login/")
 def new_loan_payment(request):
     if request.method == "POST":
         member_id = request.POST.get('member_id')

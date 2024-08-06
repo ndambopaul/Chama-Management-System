@@ -4,10 +4,12 @@ from finance.models import Payment, MemberSaving, MeriGoRound, MeriGoRoundPaymen
 from users.models import User
 from django.db import transaction
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
 from decimal import Decimal
 # Create your views here.
 ## PAYMENTS COLLECTIONS
+@login_required(login_url="/users/login/")
 def payments(request):
     payments = Payment.objects.all().order_by("-created")
 
@@ -26,12 +28,13 @@ def payments(request):
 
     return render(request, "payments/payments.html", context)
 
-
+@login_required(login_url="/users/login/")
 def new_payment(request):
     return render(request, "payments/new_payment.html")
 
 
 ## MERI GO ROUNDS
+@login_required(login_url="/users/login/")
 def chama_rounds(request):
     chama_rounds = MeriGoRound.objects.all().order_by("-created")
 
@@ -50,13 +53,14 @@ def chama_rounds(request):
     context = {"page_obj": page_obj, "members": members}
     return render(request, "chama_rounds/chama_rounds.html", context)
 
+@login_required(login_url="/users/login/")
 def end_chama_round(request,chama_round_id):
     chama_round = MeriGoRound.objects.get(id=chama_round_id)
     chama_round.done = True
     chama_round.save()
     return redirect('chama-rounds')
 
-
+@login_required(login_url="/users/login/")
 def delete_chama_round(request):
     if request.method == 'POST':
         chama_round_id = request.POST.get('chama_round_id')
@@ -67,7 +71,7 @@ def delete_chama_round(request):
         return redirect('chama-rounds')
     return render(request, 'chama_rounds/delete_chama_round.html')
 
-
+#@login_required(login_url="/users/login/")
 @transaction.atomic
 def new_chama_round(request):
     if request.method == "POST":
@@ -125,8 +129,9 @@ def new_chama_round(request):
 
 
 ## MEMBER SAVINGS
+@login_required(login_url="/users/login/")
 def total_savings(request):
-    members = User.objects.filter(role="Member").order_by("-id")
+    members = User.objects.filter(role="Member").order_by("-created")
     if request.method == "POST":
         search_text = request.POST.get("search_text")
         print(f"Search Text: {search_text}")
@@ -142,9 +147,10 @@ def total_savings(request):
     }
     return render(request, "payments/savings/member_savings.html", context)
 
+@login_required(login_url="/users/login/")
 def members_savings(request):
     savings = MemberSaving.objects.all().order_by("-created")
-    members = User.objects.filter(role="Member")
+    members = User.objects.filter(role="Member").order_by("-created")
     if request.method == "POST":
         search_text = request.POST.get("search_text")
         print(f"Search Text: {search_text}")
@@ -161,6 +167,7 @@ def members_savings(request):
     return render(request, "payments/savings/savings.html", context)
 
 
+@login_required(login_url="/users/login/")
 def mark_member_savings_as_paid(request):
     if request.method == "POST":
         savings_id = request.POST.get("savings_id")
@@ -187,7 +194,7 @@ def mark_member_savings_as_paid(request):
 
     return redirect("members-savings")
 
-
+@login_required(login_url="/users/login/")
 def mark_member_savings_as_defaulted(request, savings_id):
     payment = MemberSaving.objects.get(id=savings_id)
     payment.paid = False
@@ -197,7 +204,7 @@ def mark_member_savings_as_defaulted(request, savings_id):
 
     return redirect("members-savings")
 
-
+@login_required(login_url="/users/login/")
 def mark_member_savings_as_reset(request, savings_id):
     payment = MemberSaving.objects.get(id=savings_id)
     payment.paid = False
@@ -207,7 +214,7 @@ def mark_member_savings_as_reset(request, savings_id):
 
     return redirect("members-savings")
 
-
+@login_required(login_url="/users/login/")
 def mark_member_savings_as_cancelled(request, savings_id):
     payment = MemberSaving.objects.get(id=savings_id)
     payment.paid = False
@@ -219,6 +226,7 @@ def mark_member_savings_as_cancelled(request, savings_id):
 
 
 # MERI GO ROUND PAYMENTS
+@login_required(login_url="/users/login/")
 def chama_round_payments(request):
     chama_round_payments = MeriGoRoundPayment.objects.all().order_by("-created")
 
@@ -237,6 +245,7 @@ def chama_round_payments(request):
     return render(request, "payments/chama_payments/round_payments.html", context)
 
 
+@login_required(login_url="/users/login/")
 def mark_chama_payments_as_paid(request, payment_id):
     payment = MeriGoRoundPayment.objects.get(id=payment_id)
     payment.paid = True
@@ -251,7 +260,7 @@ def mark_chama_payments_as_paid(request, payment_id):
 
     return redirect("chama-payments")
 
-
+@login_required(login_url="/users/login/")
 def mark_chama_payments_as_defaulted(request, payment_id):
     payment = MeriGoRoundPayment.objects.get(id=payment_id)
     payment.paid = False
@@ -261,7 +270,7 @@ def mark_chama_payments_as_defaulted(request, payment_id):
 
     return redirect("chama-payments")
 
-
+@login_required(login_url="/users/login/")
 def mark_chama_payments_as_reset(request, payment_id):
     payment = MeriGoRoundPayment.objects.get(id=payment_id)
     if payment.payment_status == "Paid":
@@ -274,7 +283,7 @@ def mark_chama_payments_as_reset(request, payment_id):
 
     return redirect("chama-payments")
 
-
+@login_required(login_url="/users/login/")
 def mark_chama_payments_as_cancelled(request, payment_id):
     payment = MeriGoRoundPayment.objects.get(id=payment_id)
     if payment.payment_status == "Paid":
@@ -289,6 +298,7 @@ def mark_chama_payments_as_cancelled(request, payment_id):
 
 
 ## FINES
+@login_required(login_url="/users/login/")
 def chama_fines(request):
     chama_fines = ChamaFine.objects.all().order_by("-created")
 
