@@ -30,13 +30,13 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Member</th>
-              <th scope="col">Amount Applied</th>
-              <th scope="col">Amount Awarded</th>
+              <th scope="col">Applied</th>
+              <th scope="col">Awarded</th>
               <th scope="col">Repay Amount</th>
-              <th scope="col">Amount Repaid</th>
+              <th scope="col">Repaid</th>
               <th scope="col">Due Date</th>
               <th scope="col">Status</th>
-              <th scope="col"></th>
+              <th scope="col" colspan="2"></th>
             </tr>
           </thead>
           <tbody>
@@ -68,6 +68,9 @@
                 Reset
               </a></td>
               {% endif %}
+              <td>
+                <a href="{% url 'loan-details' loan.pk %}" class="btn btn-info btn-sm"><i class="bi bi-eye"></i></a>
+              </td>
 
               {% include "loans/approve_loan.html" %}
               {% include "loans/decline_loan.html" %}

@@ -5,7 +5,13 @@ from users.models import User
 from loans.models import Loan, LoanPayment
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+
+
 # Create your views here.
+def home(request):
+    return render(request, "loans/home.html")
+
+
 @login_required(login_url="/users/login/")
 def loans(request):
     loans = Loan.objects.all()
@@ -13,27 +19,27 @@ def loans(request):
     if request.method == "POST":
         search_text = request.POST.get("search_text")
         print(f"Search Text: {search_text}")
-        loans = Loan.objects.filter(Q(member__first_name__icontains=search_text) | Q(member__last_name__icontains=search_text))
-
+        loans = Loan.objects.filter(
+            Q(member__first_name__icontains=search_text)
+            | Q(member__last_name__icontains=search_text)
+        )
 
     members = User.objects.filter(role="Member")
     paginator = Paginator(loans, 8)
-    page_number = request.GET.get('page')
+    page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    context = {
-        "page_obj": page_obj,
-        "members": members
-    }
+    context = {"page_obj": page_obj, "members": members}
 
     return render(request, "loans/loans.html", context)
 
+
 @login_required(login_url="/users/login/")
 def new_loan(request):
-    if request.method == 'POST':
-        member_id = request.POST.get('member_id')
-        amount_applied = request.POST.get('amount_applied')
-        date_due = request.POST.get('date_due')
+    if request.method == "POST":
+        member_id = request.POST.get("member_id")
+        amount_applied = request.POST.get("amount_applied")
+        date_due = request.POST.get("date_due")
 
         amount = Decimal(amount_applied)
         repay_amount = amount + (amount * Decimal(0.16))
@@ -43,45 +49,49 @@ def new_loan(request):
             amount_applied=amount,
             date_due=date_due,
             status="Review",
-            amount_to_repay=repay_amount
+            amount_to_repay=repay_amount,
         )
 
         return redirect("loans")
 
     return render(request, "loans/new_loan.html")
 
+
 @login_required(login_url="/users/login/")
 def edit_loan(request):
-    if request.method == 'POST':
-        loan_id = request.POST.get('loan_id')
-        amount_awarded = request.POST.get('amount_awarded')
-        amount_applied = request.POST.get('amount_applied')
+    if request.method == "POST":
+        loan_id = request.POST.get("loan_id")
+        amount_awarded = request.POST.get("amount_awarded")
+        amount_applied = request.POST.get("amount_applied")
 
-        awarded_amount = Decimal(amount_awarded) 
+        awarded_amount = Decimal(amount_awarded)
         applied_amount = Decimal(amount_applied)
-
 
         loan = Loan.objects.get(id=loan_id)
         loan.amount_awarded = awarded_amount
         loan.amount_applied = applied_amount
         loan.save()
 
-        return redirect("loans")    
+        return redirect("loans")
 
     return render(request, "loans/edit_loan.html")
 
+
 @login_required(login_url="/users/login/")
 def approve_loan(request):
-    if request.method == 'POST':
-        loan_id = request.POST.get('loan_id')
+    if request.method == "POST":
+        loan_id = request.POST.get("loan_id")
         loan = Loan.objects.get(id=loan_id)
         loan.status = "Approved"
         loan.amount_awarded = loan.amount_applied
-        loan.amount_to_repay = loan.amount_awarded + (loan.amount_awarded * Decimal(0.16))
+        loan.amount_to_repay = loan.amount_awarded + (
+            loan.amount_awarded * Decimal(0.16)
+        )
         loan.save()
         return redirect("loans")
-    
+
     return render(request, "loans/approve_loan.html")
+
 
 @login_required(login_url="/users/login/")
 def decline_loan(request):
@@ -96,6 +106,7 @@ def decline_loan(request):
         return redirect("loans")
     return render(request, "loans/decline_loan.html")
 
+
 #### LOANS PAYMENTS
 @login_required(login_url="/users/login/")
 def loan_payments(request):
@@ -104,25 +115,26 @@ def loan_payments(request):
     if request.method == "POST":
         search_text = request.POST.get("search_text")
         print(f"Search Text: {search_text}")
-        loan_payments = LoanPayment.objects.filter(Q(member__first_name__icontains=search_text) | Q(member__last_name__icontains=search_text))
-
+        loan_payments = LoanPayment.objects.filter(
+            Q(member__first_name__icontains=search_text)
+            | Q(member__last_name__icontains=search_text)
+        )
 
     paginator = Paginator(loan_payments, 8)
-    page_number = request.GET.get('page')
+    page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    context = {
-        "page_obj": page_obj
-    }
+    context = {"page_obj": page_obj}
 
     return render(request, "payments/loan_payments/loan_payments.html", context)
+
 
 @login_required(login_url="/users/login/")
 def new_loan_payment(request):
     if request.method == "POST":
-        member_id = request.POST.get('member_id')
-        loan_id = request.POST.get('loan_id')
-        amount_paid = request.POST.get('amount_paid')
+        member_id = request.POST.get("member_id")
+        loan_id = request.POST.get("loan_id")
+        amount_paid = request.POST.get("amount_paid")
 
         amount = Decimal(amount_paid)
         loan = Loan.objects.get(id=loan_id)
@@ -134,8 +146,16 @@ def new_loan_payment(request):
         if loan.amount_repaid == loan.amount_to_repay:
             loan.status = "Paid"
             loan.save()
-       
 
-        return redirect('loan-payments')
+        return redirect("loan-payments")
 
     return render(request, "payments/loan_payments/pay_loan.html")
+
+
+@login_required(login_url="/users/login/")
+def loan_details(request, id):
+    loan = Loan.objects.get(id=id)
+    loan_payments = loan.loanpayments.all().order_by("-created")
+
+    context = {"loan": loan, "loan_payments": loan_payments}
+    return render(request, "loans/loan_details.html", context)

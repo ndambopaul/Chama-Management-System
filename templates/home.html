@@ -2,7 +2,8 @@
 
 {% block content %}
 <div class="row">
-    <div class="card m-2" style="width: 16rem;">
+    <div class="col">
+      <div class="card m-2">
         <div class="card-body">
           <h5 class="card-title">Members</h5>
           <hr/>
@@ -10,28 +11,38 @@
           <a href="{% url 'members' %}" class="btn btn-info btn-sm">See List</a>
         </div>
       </div>
-      <div class="card m-2" style="width: 16rem;">
-        <div class="card-body">
-          <h5 class="card-title">Loans</h5>
-          <hr/>
-          <p class="card-text">Total: {{loans_amount}}</p>
-          <a href="{% url 'loans' %}" class="btn btn-info btn-sm">See List</a>
+    </div>
+      <div class="col">
+        <div class="card m-2">
+          <div class="card-body">
+            <h5 class="card-title">Loans</h5>
+            <hr/>
+            <p class="card-text">Total: {{loans_amount}}</p>
+            <a href="{% url 'loans' %}" class="btn btn-info btn-sm">See List</a>
+          </div>
         </div>
       </div>
-      <div class="card m-2" style="width: 16rem;">
-        <div class="card-body">
-          <h5 class="card-title">Savings</h5>
-          <hr/>
-          <p class="card-text">Total: {{savings_amount}}</p>
-          <a href="{% url 'total-savings' %}" class="btn btn-info btn-sm">See List</a>
+    </div>
+      <div class="row">
+      <div class="col">
+        <div class="card m-2">
+          <div class="card-body">
+            <h5 class="card-title">Savings</h5>
+            <hr/>
+            <p class="card-text">Total: {{savings_amount}}</p>
+            <a href="{% url 'total-savings' %}" class="btn btn-info btn-sm">See List</a>
+          </div>
         </div>
       </div>
-      <div class="card m-2" style="width: 16rem;">
-        <div class="card-body">
-          <h5 class="card-title">Fines</h5>
-          <hr/>
-          <p class="card-text">Total: {{fines_amount}}</p>
-          <a href="{% url 'chama-fines' %}" class="btn btn-info btn-sm">See List</a>
+      
+      <div class="col">
+        <div class="card m-2">
+          <div class="card-body">
+            <h5 class="card-title">Fines</h5>
+            <hr/>
+            <p class="card-text">Total: {{fines_amount}}</p>
+            <a href="{% url 'fines' %}" class="btn btn-info btn-sm">See List</a>
+          </div>
         </div>
       </div>
   </div>

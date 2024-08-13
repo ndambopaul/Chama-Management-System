@@ -8,6 +8,7 @@ from users.models import User
 from finance.models import MemberSaving, MeriGoRoundPayment, ChamaFine
 from loans.models import Loan, LoanPayment
 
+
 # Create your views here.
 # Create your views here.
 ################ Authentication URLs ##############

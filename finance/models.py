@@ -14,6 +14,12 @@ PAYMENT_STATUS = (
     ("Cancelled", "Cancelled"),
 )
 
+FINE_STATUS_CHOICES = (
+    ("Approved", "Approved"),
+    ("Refunded", "Refunded"),
+    ("Disputed", "Disputed"),
+)
+
 
 class MeriGoRound(AbstractBaseModel):
     member = models.ForeignKey("users.User", on_delete=models.CASCADE)
@@ -24,7 +30,7 @@ class MeriGoRound(AbstractBaseModel):
 
     def __str__(self):
         return self.member.first_name + " " + self.member.last_name
-    
+
     @property
     def chama_round(self):
         return f"{self.round_date.day}th"
@@ -32,7 +38,9 @@ class MeriGoRound(AbstractBaseModel):
 
 class MemberSaving(AbstractBaseModel):
     merigoround = models.ForeignKey(MeriGoRound, on_delete=models.CASCADE, null=True)
-    member = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="membersavings")
+    member = models.ForeignKey(
+        "users.User", on_delete=models.CASCADE, related_name="membersavings"
+    )
     amount_expected = models.DecimalField(max_digits=100, decimal_places=2, default=250)
     amount_saved = models.DecimalField(max_digits=100, decimal_places=2, default=0)
     savings_round = models.CharField(max_length=255, choices=ROUND_CHOICES)
@@ -48,12 +56,18 @@ class MemberSaving(AbstractBaseModel):
 
 class MeriGoRoundPayment(AbstractBaseModel):
     merigoround = models.ForeignKey(MeriGoRound, on_delete=models.CASCADE, null=True)
-    member = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="membermpayments")
-    amount_expected = models.DecimalField(max_digits=100, decimal_places=2, default=1500)
+    member = models.ForeignKey(
+        "users.User", on_delete=models.CASCADE, related_name="membermpayments"
+    )
+    amount_expected = models.DecimalField(
+        max_digits=100, decimal_places=2, default=1500
+    )
     amount_paid = models.DecimalField(max_digits=100, decimal_places=2, default=0)
     chama_round = models.CharField(max_length=255, choices=ROUND_CHOICES)
     paid = models.BooleanField(default=False)
-    payment_status = models.CharField(max_length=255, choices=PAYMENT_STATUS, default="Pending")
+    payment_status = models.CharField(
+        max_length=255, choices=PAYMENT_STATUS, default="Pending"
+    )
 
     def __str__(self):
         return self.member.first_name + " " + self.member.last_name
@@ -68,15 +82,19 @@ class Payment(AbstractBaseModel):
     total_amount = models.DecimalField(max_digits=100, decimal_places=2, default=0)
     closed = models.BooleanField(default=False)
 
-
     def __str__(self):
         return self.member.first_name + " " + self.member.last_name
 
 
 class ChamaFine(AbstractBaseModel):
-    member = models.ForeignKey("users.User", on_delete=models.SET_NULL, null=True, related_name="memberfines")
+    member = models.ForeignKey(
+        "users.User", on_delete=models.SET_NULL, null=True, related_name="memberfines"
+    )
     merigoround = models.ForeignKey(MeriGoRound, on_delete=models.CASCADE, null=True)
     amount_fined = models.DecimalField(max_digits=100, decimal_places=2, default=100)
+    status = models.CharField(
+        max_length=255, choices=FINE_STATUS_CHOICES, default="Approved"
+    )
 
     def __str__(self):
         return self.member.first_name + " " + self.member.last_name

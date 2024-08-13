@@ -5,6 +5,19 @@
     <div class="col">
         <h3>chama Fines</h3>
     </div>
+    <div class="col">
+      <form method="POST">
+        {% csrf_token %}
+          <div class="row">
+            <div class="col-8">
+              <input type="text" class="form-control" name="search_text" id="search_text" placeholder="Name/ID No. ...">
+            </div>
+            <div class="col-4">
+              <button class="btn btn-info">Search</button>
+            </div>
+          </div>
+      </form>
+    </div>
 </div>
 <hr/>
       <div class="table-responsive small">
@@ -16,7 +29,8 @@
               <th scope="col">Member Fined</th>
               <th scope="col">Chama Round</th>
               <th scope="col">Amount</th>
-            
+              <th scope="col">Status</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -27,6 +41,10 @@
               <td>{{fine.member}}</td>
               <td>{{fine.merigoround}}-<b>{{fine.merigoround.round_date}}</b></td>
               <td>{{fine.amount_fined}}</td>
+              <td>{{fine.status}}</td>
+              <td>
+                <a href="" class="btn btn-warning btn-sm">Dispute</a>
+              </td>
         
             {% endfor %}
 

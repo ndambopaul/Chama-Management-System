@@ -1,12 +1,20 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
-from finance.models import Payment, MemberSaving, MeriGoRound, MeriGoRoundPayment, ChamaFine
+from finance.models import (
+    Payment,
+    MemberSaving,
+    MeriGoRound,
+    MeriGoRoundPayment,
+    ChamaFine,
+)
 from users.models import User
 from django.db import transaction
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 
 from decimal import Decimal
+
+
 # Create your views here.
 ## PAYMENTS COLLECTIONS
 @login_required(login_url="/users/login/")
@@ -16,7 +24,10 @@ def payments(request):
     if request.method == "POST":
         search_text = request.POST.get("search_text")
         print(f"Search Text: {search_text}")
-        payments = Payment.objects.filter(Q(member__first_name__icontains=search_text) | Q(member__last_name__icontains=search_text))
+        payments = Payment.objects.filter(
+            Q(member__first_name__icontains=search_text)
+            | Q(member__last_name__icontains=search_text)
+        )
 
     paginator = Paginator(payments, 10)
     page_number = request.GET.get("page")
@@ -27,6 +38,7 @@ def payments(request):
     }
 
     return render(request, "payments/payments.html", context)
+
 
 @login_required(login_url="/users/login/")
 def new_payment(request):
@@ -43,8 +55,10 @@ def chama_rounds(request):
     if request.method == "POST":
         search_text = request.POST.get("search_text")
         print(f"Search Text: {search_text}")
-        chama_rounds = MeriGoRound.objects.filter(Q(member__first_name__icontains=search_text) | Q(member__last_name__icontains=search_text))
-
+        chama_rounds = MeriGoRound.objects.filter(
+            Q(member__first_name__icontains=search_text)
+            | Q(member__last_name__icontains=search_text)
+        )
 
     paginator = Paginator(chama_rounds, 10)
     page_number = request.GET.get("page")
@@ -53,25 +67,28 @@ def chama_rounds(request):
     context = {"page_obj": page_obj, "members": members}
     return render(request, "chama_rounds/chama_rounds.html", context)
 
+
 @login_required(login_url="/users/login/")
-def end_chama_round(request,chama_round_id):
+def end_chama_round(request, chama_round_id):
     chama_round = MeriGoRound.objects.get(id=chama_round_id)
     chama_round.done = True
     chama_round.save()
-    return redirect('chama-rounds')
+    return redirect("chama-rounds")
+
 
 @login_required(login_url="/users/login/")
 def delete_chama_round(request):
-    if request.method == 'POST':
-        chama_round_id = request.POST.get('chama_round_id')
+    if request.method == "POST":
+        chama_round_id = request.POST.get("chama_round_id")
 
         chama_round = MeriGoRound.objects.get(id=chama_round_id)
         chama_round.delete()
 
-        return redirect('chama-rounds')
-    return render(request, 'chama_rounds/delete_chama_round.html')
+        return redirect("chama-rounds")
+    return render(request, "chama_rounds/delete_chama_round.html")
 
-#@login_required(login_url="/users/login/")
+
+# @login_required(login_url="/users/login/")
 @transaction.atomic
 def new_chama_round(request):
     if request.method == "POST":
@@ -119,7 +136,7 @@ def new_chama_round(request):
                     )
                 )
             MemberSaving.objects.bulk_create(members_savings_list)
-            
+
             # Create Member Savings Records
             print(f"Member: {member}, Round Date: {round_date}")
             return redirect("chama-rounds")
@@ -135,17 +152,17 @@ def total_savings(request):
     if request.method == "POST":
         search_text = request.POST.get("search_text")
         print(f"Search Text: {search_text}")
-        members = User.objects.filter(Q(first_name__icontains=search_text) | Q(last_name__icontains=search_text))
+        members = User.objects.filter(
+            Q(first_name__icontains=search_text) | Q(last_name__icontains=search_text)
+        )
 
     paginator = Paginator(members, 8)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    context = {
-        "page_obj": page_obj,
-        "members": members
-    }
+    context = {"page_obj": page_obj, "members": members}
     return render(request, "payments/savings/member_savings.html", context)
+
 
 @login_required(login_url="/users/login/")
 def members_savings(request):
@@ -154,16 +171,16 @@ def members_savings(request):
     if request.method == "POST":
         search_text = request.POST.get("search_text")
         print(f"Search Text: {search_text}")
-        savings = MemberSaving.objects.filter(Q(member__first_name__icontains=search_text) | Q(member__last_name__icontains=search_text))
+        savings = MemberSaving.objects.filter(
+            Q(member__first_name__icontains=search_text)
+            | Q(member__last_name__icontains=search_text)
+        )
 
     paginator = Paginator(savings, 8)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    context = {
-        "page_obj": page_obj,
-        "members": members
-    }
+    context = {"page_obj": page_obj, "members": members}
     return render(request, "payments/savings/savings.html", context)
 
 
@@ -189,10 +206,11 @@ def mark_member_savings_as_paid(request):
             ChamaFine.objects.create(
                 member=payment.member,
                 merigoround=payment.merigoround,
-                amount_fined=Decimal(fine)
+                amount_fined=Decimal(fine),
             )
 
     return redirect("members-savings")
+
 
 @login_required(login_url="/users/login/")
 def mark_member_savings_as_defaulted(request, savings_id):
@@ -204,6 +222,7 @@ def mark_member_savings_as_defaulted(request, savings_id):
 
     return redirect("members-savings")
 
+
 @login_required(login_url="/users/login/")
 def mark_member_savings_as_reset(request, savings_id):
     payment = MemberSaving.objects.get(id=savings_id)
@@ -213,6 +232,7 @@ def mark_member_savings_as_reset(request, savings_id):
     payment.save()
 
     return redirect("members-savings")
+
 
 @login_required(login_url="/users/login/")
 def mark_member_savings_as_cancelled(request, savings_id):
@@ -233,8 +253,10 @@ def chama_round_payments(request):
     if request.method == "POST":
         search_text = request.POST.get("search_text")
         print(f"Search Text: {search_text}")
-        chama_round_payments = MeriGoRoundPayment.objects.filter(Q(member__first_name__icontains=search_text) | Q(member__last_name__icontains=search_text))
-
+        chama_round_payments = MeriGoRoundPayment.objects.filter(
+            Q(member__first_name__icontains=search_text)
+            | Q(member__last_name__icontains=search_text)
+        )
 
     paginator = Paginator(chama_round_payments, 8)
     page_number = request.GET.get("page")
@@ -256,9 +278,9 @@ def mark_chama_payments_as_paid(request, payment_id):
     payment.merigoround.save()
 
     print(payment.merigoround.amount_raised)
-    
 
     return redirect("chama-payments")
+
 
 @login_required(login_url="/users/login/")
 def mark_chama_payments_as_defaulted(request, payment_id):
@@ -269,6 +291,7 @@ def mark_chama_payments_as_defaulted(request, payment_id):
     payment.save()
 
     return redirect("chama-payments")
+
 
 @login_required(login_url="/users/login/")
 def mark_chama_payments_as_reset(request, payment_id):
@@ -282,6 +305,7 @@ def mark_chama_payments_as_reset(request, payment_id):
     payment.save()
 
     return redirect("chama-payments")
+
 
 @login_required(login_url="/users/login/")
 def mark_chama_payments_as_cancelled(request, payment_id):
@@ -298,22 +322,3 @@ def mark_chama_payments_as_cancelled(request, payment_id):
 
 
 ## FINES
-@login_required(login_url="/users/login/")
-def chama_fines(request):
-    chama_fines = ChamaFine.objects.all().order_by("-created")
-
-    if request.method == "POST":
-        search_text = request.POST.get("search_text")
-        print(f"Search Text: {search_text}")
-        chama_fines = ChamaFine.objects.filter(Q(member__first_name__icontains=search_text) | Q(member__last_name__icontains=search_text))
-
-
-    paginator = Paginator(chama_fines, 13)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-
-    context = {
-        "page_obj": page_obj
-    }
-
-    return render(request, "payments/chama_fines.html", context)
