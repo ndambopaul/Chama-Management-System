@@ -145,10 +145,6 @@ def new_chama_round(request):
     return render(request, "chama_rounds/new_chama_round.html")
 
 
-## MEMBER SAVINGS
-
-
-
 # MERI GO ROUND PAYMENTS
 @login_required(login_url="/users/login/")
 def chama_round_payments(request):
@@ -223,6 +219,3 @@ def mark_chama_payments_as_cancelled(request, payment_id):
     payment.save()
 
     return redirect("chama-payments")
-
-
-## FINES

@@ -3,58 +3,50 @@
 {% block content %}
 <div class="card mt-2 mb-2">
   <div class="card-header bg-primary text-white">
-    <h4>Loan Details</h4>
+    <h4>Savings Details</h4>
 </div>
     <div class="card-body">
       <div class="row">
         <div class="col-md-6">
-          <p>Member: {{loan.member}}</p>
-          <p>Amount Applied: {{loan.amount_applied}}</p>
-          <p>Amount Awarded: {{loan.amount_awarded}}</p>
-          <p>Repay Amount: {{loan.amount_to_repay}}</p>
+          <p>Member: {{grouped_saving.member}}</p>
+          <p>Amount Saved: {{grouped_saving.amount_saved}}</p>
       </div>
       <div class="col-md-6">
-          <p>Interest Rate: </p>
-          <p>Interest Amount: {{loan.loan_interest}}</p>
-          <p>Date Due: {{loan.date_due}}</p>
-          <p>Amount Repaid: {{loan.amount_repaid}}</p>
+          <p>Start Date: {{grouped_saving.start_date}}</p>
+          <p>End Date: {{grouped_saving.end_date}}</p>
       </div>
       </div>
     </div>
 </div>
 <div class="card">
   <div class="card-header bg-secondary text-white">
-    <h4>Loan Repayment Records</h4>
+    <h4>Savings Records</h4>
 </div>
     <div class="card-body">
         <table class="table table-sm">
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Member</th>
-              <th scope="col">Total Loan</th>
-              <th scope="col">Amount Paid</th>
-              <th scope="col">Loan Balance</th>
-              <th scope="col">Date Paid</th>
+              <th scope="col">Chama Round</th>
+              <th scope="col">Expected</th>
+              <th scope="col">Saved</th>
+              <th scope="col">Fine</th>
+              <th scope="col">Status</th>
               <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
-            {% for payment in loan_payments %}
+            {% for saving in page_obj %}
             <tr>
-              <td>{{payment.id}}</td>
-              <td>{{payment.member}}</td>
-              <td>{{payment.loan.amount_to_repay}}</td>
-              <td>{{payment.amount}}</td>
-              <td>{{payment.balance}}</td>
-              <td>{{payment.created.date}}</td>
+              <td>{{saving.id}}</td>
+              <td>{{saving.merigoround}}</td>
+              <td>{{saving.amount_expected}}</td>
+              <td>{{saving.amount_saved}}</td>
+              <td>{{saving.amount_fined}}</td>
+              <td>{{saving.payment_status}}</td>
               <td>
                 <a class="btn btn-info btn-sm"><i class="bi bi-eye"></i></a>
               </td>
-
-              {% include "loans/approve_loan.html" %}
-              {% include "loans/decline_loan.html" %}
-              {% include "payments/loan_payments/pay_loan.html" %}
             </tr>
             {% endfor %}
 

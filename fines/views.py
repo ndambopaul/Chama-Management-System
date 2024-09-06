@@ -60,6 +60,9 @@ def resolve_disputed_fine(request):
             )
             savings_round.amount_saved += fine.amount_fined
             savings_round.save()
+
+            savings_round.saving.amount_saved += fine.amount_fined
+            savings_round.saving.save()
             fine.amount_fined = 0
             fine.save()
             

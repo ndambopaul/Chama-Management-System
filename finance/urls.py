@@ -23,22 +23,8 @@ urlpatterns = [
     path("delete-round/", delete_chama_round, name="delete-chama-round"),
     
     path("chama-payments/", chama_round_payments, name="chama-payments"),
-    path(
-        "chama-payment-as-paid/<int:payment_id>/",
-        mark_chama_payments_as_paid,name="chama-payment-as-paid"),
-    path(
-        "chama-payment-as-defaulted/<int:payment_id>/",
-        mark_chama_payments_as_defaulted,
-        name="chama-payment-as-defaulted",
-    ),
-    path(
-        "chama-payment-as-reset/<int:payment_id>/",
-        mark_chama_payments_as_reset,
-        name="chama-payment-as-reset",
-    ),
-    path(
-        "chama-payment-as-cancelled/<int:payment_id>/",
-        mark_chama_payments_as_cancelled,
-        name="chama-payment-as-cancelled",
-    ),
+    path("chama-payment-as-paid/<int:payment_id>/", mark_chama_payments_as_paid,name="chama-payment-as-paid"),
+    path("chama-payment-as-defaulted/<int:payment_id>/", mark_chama_payments_as_defaulted, name="chama-payment-as-defaulted"),
+    path("chama-payment-as-reset/<int:payment_id>/", mark_chama_payments_as_reset, name="chama-payment-as-reset",),
+    path("chama-payment-as-cancelled/<int:payment_id>/", mark_chama_payments_as_cancelled, name="chama-payment-as-cancelled"),
 ]

@@ -2,7 +2,7 @@
 {% block content %}
 <div class="row mt-2">
     <div class="col">
-        <h3>Period Savings</h3>
+        <h3>Member Savings</h3>
     </div>
     <div class="col">
       <form method="POST">
@@ -25,29 +25,19 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Member</th>
-              <th scope="col">Start Date</th>
               <th scope="col">Amount Saved</th>
-              <th scope="col">Final Date</th>
-              <th scope="col">Paid Out</th>
-              <th scope="col" colspan="2"></th>
+              <th scope="col">Total Fines</th>
+              <th scope="col">Total Loans</th>
             </tr>
           </thead>
           <tbody>
-            {% for saving in page_obj %}
+            {% for member in page_obj %}
             <tr>
-              <td>{{saving.id}}</td>
-              <td>{{saving.member}}</td>
-              <td>{{saving.start_date}}</td>
-              <td>{{saving.amount_saved}}</td>
-              <td>{{saving.end_date}}</td>
-              <td>{% if saving.redeemed %} Yes {% else %} No {% endif %}</td>
-              <td>
-                <a href="{% url 'savings-details' saving.id %}" class="btn btn-info btn-sm">
-                  <i class="bi bi-eye-fill"></i></a>
-              </td>
-              <td>
-                <button class="btn btn-primary btn-sm">Payout</button>
-              </td>
+              <td>{{member.id}}</td>
+              <td>{{member.first_name}} {{member.last_name}}</td>
+              <td>{{member.total_savings}}</td>
+              <td>{{member.total_fines}}</td>
+              <td>{{member.total_loans}}</td>
             </tr>
             {% endfor %}
 

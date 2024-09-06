@@ -36,19 +36,10 @@ class MeriGoRound(AbstractBaseModel):
     def chama_round(self):
         return f"{self.round_date.day}th"
 
-class GroupedSaving(AbstractBaseModel):
-    member = models.ForeignKey("users.User", on_delete=models.CASCADE)
-    start_date = models.DateField()
-    end_date = models.DateField()
-    amount_saved = models.DecimalField(max_digits=100, decimal_places=2, default=0)
-    redeemed = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.member.username
 
 
 class MemberSaving(AbstractBaseModel):
-    saving = models.ForeignKey(GroupedSaving, on_delete=models.SET_NULL, null=True)
+    saving = models.ForeignKey("savings.GroupedSaving", on_delete=models.SET_NULL, null=True)
     merigoround = models.ForeignKey(MeriGoRound, on_delete=models.CASCADE, null=True)
     member = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="membersavings")
     amount_expected = models.DecimalField(max_digits=100, decimal_places=2, default=250)
