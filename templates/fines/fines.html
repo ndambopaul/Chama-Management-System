@@ -43,9 +43,16 @@
               <td>{{fine.amount_fined}}</td>
               <td>{{fine.status}}</td>
               <td>
-                <a href="" class="btn btn-warning btn-sm">Dispute</a>
+                {% if fine.status == "Approved" %}
+                <a data-bs-toggle="modal" data-bs-target="#newFineDisputeModal{{ fine.id }}" class="btn btn-warning btn-sm">Dispute</a>
+                {% elif fine.status == "Disputed" %}
+                <a data-bs-toggle="modal" data-bs-target="#settleFineDisputeModal{{ fine.id }}" class="btn btn-info btn-sm">Settle</a>
+                {% else %}
+                <span class="btn btn-outline-success btn-sm">Settled!</span>
+                {% endif %}
               </td>
-        
+              {% include "fines/dispute_fine.html" %}
+              {% include "fines/resolve_fine_dispute.html" %}
             {% endfor %}
 
           </tbody>

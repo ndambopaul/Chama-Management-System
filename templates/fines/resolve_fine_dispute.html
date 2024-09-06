@@ -1,0 +1,41 @@
+<div class="modal fade" id="settleFineDisputeModal{{fine.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-center">Settle Fine Dispute</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+            <form action="{% url 'resolve-fine-dispute' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                <div class="mb-2">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="fine"
+                      name="fine"
+                      value="{{fine.id}}"
+                      readonly
+                      hidden
+                      required
+                    />
+                  </div>
+                
+                  <div class="mb-2">
+                    <label class="form-label fw-bold">You decided to?</label>
+                    <select class="form-select" name="decision" id="decision">
+                        <option></option>
+                        <option value="Refunded">Refund Fine</option>
+                        <option value="Settled">Keep Fine</option>
+                    </select>
+                  </div>
+                 
+                <div class="text-center mt-4">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Close</button>
+                    <button type="submit" class="btn btn-primary">Yes, Settle</button>
+                </div>
+              </div>
+              </form>
+      </div>
+    </div>
+  </div>
