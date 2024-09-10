@@ -31,7 +31,7 @@ def user_logout(request):
 
 @login_required(login_url="/users/login/")
 def members(request):
-    members = User.objects.all().order_by("-created")
+    members = User.objects.filter(is_staff=False, is_superuser=False).order_by("-created")
 
     if request.method == "POST":
         search_text = request.POST.get("search_text")

@@ -28,6 +28,7 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Chama Round</th>
+              <th scope="col">Date</th>
               <th scope="col">Expected</th>
               <th scope="col">Saved</th>
               <th scope="col">Fine</th>
@@ -39,7 +40,8 @@
             {% for saving in page_obj %}
             <tr>
               <td>{{saving.id}}</td>
-              <td>{{saving.merigoround}}</td>
+              <td>{{saving.merigoround}}-{{saving.merigoround.chama_round}}</td>
+              <td>{{saving.merigoround.round_date}}</td>
               <td>{{saving.amount_expected}}</td>
               <td>{{saving.amount_saved}}</td>
               <td>{{saving.amount_fined}}</td>
