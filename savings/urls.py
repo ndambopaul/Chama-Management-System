@@ -7,7 +7,10 @@ from savings.views import (
     mark_member_savings_as_reset,
     mark_member_savings_as_defaulted,
     total_savings,
-    member_balance_sheet
+    member_balance_sheet,
+    payout_member_savings,
+    create_savings_period,
+    savings_payouts
 )
 
 urlpatterns = [
@@ -19,4 +22,8 @@ urlpatterns = [
     path("default-savings/<int:savings_id>/",mark_member_savings_as_defaulted, name="member-savings-as-defaulted"),
     path("reset-savings/<int:savings_id>/", mark_member_savings_as_reset, name="member-savings-as-reset"),
     path("cancel-savings/<int:savings_id>/", mark_member_savings_as_cancelled, name="member-savings-as-cancelled"),
+
+    path("payout-member-savings/", payout_member_savings, name="payout-member-savings"),
+    path("create-savings-period/", create_savings_period, name="create-savings-period"),
+    path("savings-payouts/", savings_payouts, name="savings-payouts"),
 ]

@@ -2,17 +2,21 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5 text-center">Pay Loan</h1>
+          <h1 class="modal-title fs-5 text-center">Record Loan Payment</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
             <form action="{% url 'pay-loan' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <p>Member: {{loan.member.first_name}} {{loan.member.last_name}}</p>
-                        <p>Amount Awarded: {{loan.amount_awarded}}</p>
-                        <p>Amount Repaid: {{loan.amount_repaid}}</p>
-                        <p>Loan Balance: {{loan.loan_balance}}</p>
+                    <div class="row mb-3">
+                      <div class="col">
+                        <p><b>Member:</b> {{loan.member.first_name}} {{loan.member.last_name}}</p>
+                        <p><b>Amount Awarded:</b> {{loan.amount_awarded}}</p>
+                      </div>
+                      <div class="col">
+                        <p><b>Amount Repaid:</b> {{loan.amount_repaid}}</p>
+                        <p><b>Loan Balance:</b> {{loan.loan_balance}}</p>
+                      </div>
                     </div>
                      
                     <input
@@ -39,13 +43,15 @@
                       />
 
                       <div class="mb-3">
-                        <label class="form-label">Amount Paying</label>
+                        <label class="form-label fw-bold">Amount Paying</label>
                         <input
                             type="number"
                             class="form-control"
                             id="amount_paid"
                             name="amount_paid"
-                        
+                            min="0"
+                            max="{{loan.loan_balance}}"
+                            placeholder="Enter Amount ..."
                             required
                           />
                     </div>

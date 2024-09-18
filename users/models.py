@@ -37,3 +37,7 @@ class User(AbstractUser, AbstractBaseModel):
     @property
     def total_loans(self):
         return sum(self.memberloans.all().values_list("amount_awarded", flat=True))
+
+    @property
+    def name(self):
+        return f"{self.first_name} {self.last_name}"

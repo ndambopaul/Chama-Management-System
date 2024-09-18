@@ -17,6 +17,13 @@
           </div>
       </form>
     </div>
+    <div class="col-2">
+      <form method="POST">
+        {% csrf_token %}
+        <input type="text" id="download_savings" name="download_savings" value="download_savings" hidden>
+        <button type="submit" class="btn btn-success"><i class="bi bi-download"></i></button>
+      </form>
+    </div>
 </div>
 <hr/>
       <div class="table-responsive small">

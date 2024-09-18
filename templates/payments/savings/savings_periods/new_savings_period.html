@@ -1,0 +1,35 @@
+<div class="modal fade" id="newSavingsPeriodModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-center">New Savings Period</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+            <form action="{% url 'create-savings-period' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                
+                      <div class="mb-3">
+                        <p>Are you sure to create a new savings period for members?:</p>
+                        <p><b>Note:</b> Please make sure payouts for previous period is fully made.</p>
+                    </div>
+                    <hr>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Period Start Date</label>
+                        <input type="date" id="start_date" name="start_date" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Period End Date</label>
+                        <input type="date" id="end_date" name="end_date" class="form-control" required />
+                    </div>
+                    
+                    <div class="text-center mt-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Close</button>
+                          <button type="submit" class="btn btn-success">Yes, Create</button>
+                    </div>
+               
+              </div>
+              </form>
+      </div>
+    </div>
+  </div>

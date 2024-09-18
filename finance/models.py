@@ -88,3 +88,5 @@ class ChamaFine(AbstractBaseModel):
 
     def __str__(self):
         return self.member.first_name + " " + self.member.last_name
+
+

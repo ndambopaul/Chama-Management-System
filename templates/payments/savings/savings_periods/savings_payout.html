@@ -1,0 +1,39 @@
+<div class="modal fade" id="savingsPayoutModal{{saving.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-center">Payout Member Savings</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+            <form action="{% url 'payout-member-savings' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="savings_id"
+                        name="savings_id"
+                        value="{{saving.id}}"
+                        hidden
+                        readonly
+                        required
+                      />
+                
+                      <div class="mb-3">
+                        <p>Are you sure to payout member savings for:</p>
+                        <hr>
+                        <p><b>Member: </b>{{saving.member}}</p>
+                        <p><b>Period Starting: </b> {{saving.start_date}}</p>
+                        <p><b>Period Ending: </b>{{saving.end_date}}</p>
+                    </div>
+                    <hr>
+                    <div class="text-center mt-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Close</button>
+                          <button type="submit" class="btn btn-success">Yes, Proceed</button>
+                    </div>
+               
+              </div>
+              </form>
+      </div>
+    </div>
+  </div>
