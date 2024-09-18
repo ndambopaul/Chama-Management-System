@@ -1,49 +1,69 @@
 {% extends "base.html" %}
 
+{% block additional_css %}
+
+
+    <style>
+      .card-icon {
+      font-size: 3rem;
+      color: #28a745;
+  }
+  .card-link {
+      text-decoration: none;
+      color: #007bff;
+  }
+    </style>
+{% endblock additional_css %}
+
 {% block content %}
-<div class="row">
-    <div class="col">
-      <div class="card m-2">
-        <div class="card-body">
-          <h5 class="card-title">Members</h5>
-          <hr/>
-          <p class="card-text">Count: {{members_count}}</p>
-          <a href="{% url 'members' %}" class="btn btn-info btn-sm">See List</a>
-        </div>
-      </div>
-    </div>
-      <div class="col">
-        <div class="card m-2">
+<div class="row mt-3">
+  <!-- Members Card -->
+  <div class="col-md-3">
+      <div class="card text-center">
           <div class="card-body">
-            <h5 class="card-title">Loans</h5>
-            <hr/>
-            <p class="card-text">Total: {{loans_amount}}</p>
-            <a href="{% url 'loans' %}" class="btn btn-info btn-sm">See List</a>
+              <i class="fas fa-users card-icon"></i>
+              <h5 class="card-title mt-3">Members</h5>
+              <p class="card-text">View all members</p>
+              <a href="{% url 'members' %}" class="card-link">Go to Members</a>
           </div>
-        </div>
-      </div>
-    </div>
-      <div class="row">
-      <div class="col">
-        <div class="card m-2">
-          <div class="card-body">
-            <h5 class="card-title">Savings</h5>
-            <hr/>
-            <p class="card-text">Total: {{savings_amount}}</p>
-            <a href="{% url 'savings' %}" class="btn btn-info btn-sm">See List</a>
-          </div>
-        </div>
-      </div>
-      
-      <div class="col">
-        <div class="card m-2">
-          <div class="card-body">
-            <h5 class="card-title">Fines</h5>
-            <hr/>
-            <p class="card-text">Total: {{fines_amount}}</p>
-            <a href="{% url 'fines' %}" class="btn btn-info btn-sm">See List</a>
-          </div>
-        </div>
       </div>
   </div>
+  
+  <!-- Savings Card -->
+  <div class="col-md-3">
+      <div class="card text-center">
+          <div class="card-body">
+              <i class="fas fa-piggy-bank card-icon"></i>
+              <h5 class="card-title mt-3">Savings</h5>
+              <p class="card-text">View savings records</p>
+              <a href="{% url 'savings' %}" class="card-link">Go to Savings</a>
+          </div>
+      </div>
+  </div>
+
+  <!-- Loans Card -->
+  <div class="col-md-3">
+      <div class="card text-center">
+          <div class="card-body">
+              <i class="fas fa-hand-holding-usd card-icon"></i>
+              <h5 class="card-title mt-3">Loans</h5>
+              <p class="card-text">View loan details</p>
+              <a href="{% url 'loans' %}" class="card-link">Go to Loans</a>
+          </div>
+      </div>
+  </div>
+
+  <!-- Fines Card -->
+  <div class="col-md-3">
+      <div class="card text-center">
+          <div class="card-body">
+              <i class="fas fa-exclamation-triangle card-icon"></i>
+              <h5 class="card-title mt-3">Fines</h5>
+              <p class="card-text">View fines issued</p>
+              <a href="{% url 'fines' %}" class="card-link">Go to Fines</a>
+          </div>
+      </div>
+  </div>
+</div>
+
 {% endblock %}
